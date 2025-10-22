@@ -1,0 +1,23 @@
+:root {
+  --color-primary: #165DFF;
+  --bg-gradient-start: #F7F8FA;
+  --bg-gradient-end: #E8F3FF;
+  --text-primary: #1d2129;
+  --text-secondary: #86909c;
+  --card-bg: #ffffff;
+  --border-color: #e5e6eb;
+  --input-bg: #f7f8fa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #3C7CFF;
+    --bg-gradient-start: #0B1220;
+    --bg-gradient-end: #0B1220;
+    --text-primary: #E5E6EB;
+    --text-secondary: #9EA3B0;
+    --card-bg: #111827;
+    --border-color: #2B2F36;
+    --input-bg: #0F172A;
+  }
+}

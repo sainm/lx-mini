@@ -1,11 +1,30 @@
 export default {
   pages: [
-    'pages/index/index'
+    'pages/login/index',
+    'pages/register/index',
+    'pages/quiz/index',
+    'pages/results/index'
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black'
+    navigationBarBackgroundColor: '#165DFF',
+    navigationBarTitleText: '心理测评',
+    navigationBarTextStyle: 'white'
+  },
+  tabBar: {
+    color: '#666',
+    selectedColor: '#165DFF',
+    backgroundColor: '#ffffff',
+    borderStyle: 'black',
+    list: [
+      {
+        pagePath: 'pages/quiz/index',
+        text: '答题'
+      },
+      {
+        pagePath: 'pages/results/index',
+        text: '结果'
+      }
+    ]
   }
 }

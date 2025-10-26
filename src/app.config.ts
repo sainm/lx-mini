@@ -3,7 +3,9 @@ export default {
     'pages/login/index',
     'pages/register/index',
     'pages/quiz/index',
-    'pages/results/index'
+    'pages/results/index',
+    'pages/task-detail/index',
+    'pages/task-result/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -19,7 +21,7 @@ export default {
     list: [
       {
         pagePath: 'pages/quiz/index',
-        text: '答题'
+        text: '任务'
       },
       {
         pagePath: 'pages/results/index',

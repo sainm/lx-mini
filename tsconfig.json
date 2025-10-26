@@ -18,6 +18,7 @@
     "jsx": "preserve",
     "allowJs": true,
     "resolveJsonModule": true,
+    "types": ["node"],
     "typeRoots": [
       "node_modules/@types"
     ]

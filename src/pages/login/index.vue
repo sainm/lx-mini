@@ -24,59 +24,64 @@
   </view>
 </template>
 
-<script>
+<script setup lang="ts">
 import Taro from '@tarojs/taro'
 import { ref } from 'vue'
 import { AtInput, AtButton } from 'taro-ui-vue3'
+import { useUserStore } from '../../stores/user'
+import { login } from '../../api/auth'
 
-export default {
-  components: { AtInput, AtButton },
-  setup() {
-    const username = ref('')
-    const password = ref('')
-    const loading = ref(false)
+const userStore = useUserStore()
 
-    const onChangeUsername = (val) => { username.value = val }
-    const onChangePassword = (val) => { password.value = val }
+const username = ref('')
+const password = ref('')
+const loading = ref(false)
 
-    const onLogin = async () => {
-      if (!username.value || !password.value) {
-        Taro.showToast({ title: '请输入用户名和密码', icon: 'none' })
-        return
-      }
-      loading.value = true
-      try {
-        const res = await Taro.request({
-          url: 'http://aaa.com/auth',
-          method: 'POST',
-          header: { 'Content-Type': 'application/json' },
-          data: { username: username.value, password: password.value }
-        })
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          const token = (res.data && res.data.token) || ''
-          if (token) {
-            Taro.setStorageSync('AUTH_TOKEN', token)
-          }
-          Taro.showToast({ title: '登录成功', icon: 'success' })
-          // 登录成功后，切换到底部“答题”Tab
-      Taro.switchTab({ url: '/pages/quiz/index' })
-        } else {
-          const message = (res.data && res.data.message) || `登录失败(${res.statusCode})`
-          Taro.showToast({ title: message, icon: 'none' })
-        }
-      } catch (e) {
-        Taro.showToast({ title: '网络异常', icon: 'none' })
-      } finally {
-        loading.value = false
-      }
-    }
+const onChangeUsername = (val: string) => {
+  username.value = val
+}
 
-    const goRegister = () => {
-      Taro.navigateTo({ url: '/pages/register/index' })
-    }
+const onChangePassword = (val: string) => {
+  password.value = val
+}
 
-    return { username, password, loading, onChangeUsername, onChangePassword, onLogin, goRegister }
+const onLogin = async () => {
+  if (!username.value || !password.value) {
+    Taro.showToast({ title: '请输入用户名和密码', icon: 'none' })
+    return
   }
+
+  loading.value = true
+  try {
+    const res = await login({
+      username: username.value,
+      password: password.value
+    })
+
+    // 保存 token 和用户信息
+    Taro.setStorageSync('AUTH_TOKEN', res.token)
+    userStore.setToken(res.token)
+    userStore.setUser(res.user)
+
+    Taro.showToast({ title: '登录成功', icon: 'success' })
+
+    // 登录成功后，切换到任务列表Tab
+    setTimeout(() => {
+      Taro.switchTab({ url: '/pages/quiz/index' })
+    }, 500)
+  } catch (error: any) {
+    Taro.showToast({
+      title: error.message || '登录失败',
+      icon: 'none',
+      duration: 2000
+    })
+  } finally {
+    loading.value = false
+  }
+}
+
+const goRegister = () => {
+  Taro.navigateTo({ url: '/pages/register/index' })
 }
 </script>
 

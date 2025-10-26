@@ -10,6 +10,7 @@
     "framework": "Vue3"
   },
   "scripts": {
+    "setup": "node scripts/setup-env.js",
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
@@ -58,6 +59,7 @@
     "@babel/plugin-proposal-class-properties": "7.14.5",
     "@tarojs/cli": "4.1.7",
     "@tarojs/vite-runner": "4.1.7",
+    "@types/node": "^24.9.1",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "@vitejs/plugin-vue": "^4.0.0",

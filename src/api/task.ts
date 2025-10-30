@@ -11,7 +11,64 @@ export async function getTaskList(): Promise<Task[]> {
     await delay()
     return mockTasks
   }
-  return get<Task[]>(API_ENDPOINTS.TASK_LIST)
+  
+  // 调用后端接口（使用 GET）
+  const response = await get<any>(API_ENDPOINTS.TASK_LIST)
+  
+  console.log('=== 任务列表原始数据 ===')
+  console.log(response)
+  console.log('=====================')
+  
+  // 注意：request.ts 已经解包了 result.data，所以这里收到的是 { list: [...], total: 1 }
+  if (response && response.list) {
+    const tasks = response.list.map((item: any) => {
+      // 转换后端状态码到前端状态
+      // 后端: 0=未开始, 1=进行中, 2=已完成
+      console.log('原始状态:', item.status, '进度:', item.progress)
+      let status: 'not_started' | 'in_progress' | 'completed' | 'expired' = 'not_started'
+      if (item.status === 2 || item.progress === 100) {
+        status = 'completed'
+      } else if (item.status === 1 || (item.progress > 0 && item.progress < 100)) {
+        status = 'in_progress'
+      }
+      console.log('转换后状态:', status)
+      
+      return {
+        id: item.id,
+        title: item.scaleName || '未命名测评',
+        description: `${item.planName} - ${item.versionName}`,
+        coverImage: undefined,
+        totalQuestions: 0, // 需要从任务详情接口获取
+        duration: undefined,
+        status: status,
+        deadline: item.endTime || '',
+        completedAt: item.status === 2 ? item.createTime : undefined,
+        score: undefined,
+        createdAt: item.createTime || new Date().toISOString()
+      }
+    })
+    
+    console.log('=== 转换后的任务列表 ===')
+    console.log(tasks)
+    console.log('====================')
+    
+    return tasks
+  }
+  
+  // 兼容其他格式
+  if (Array.isArray(response)) {
+    return response
+  }
+  
+  if (response && response.list) {
+    return response.list
+  }
+  
+  if (response && response.data && Array.isArray(response.data)) {
+    return response.data
+  }
+  
+  return []
 }
 
 /**
@@ -32,8 +89,9 @@ export async function getTaskDetail(taskId: string | number): Promise<{
       questions: mockQuestions
     }
   }
+  // 使用 POST 而不是 GET
   const url = API_ENDPOINTS.TASK_DETAIL.replace(':id', String(taskId))
-  return get(url)
+  return post(url, {}, true)
 }
 
 /**
@@ -80,7 +138,8 @@ export async function getResultList(): Promise<Result[]> {
     await delay()
     return mockResults
   }
-  return get<Result[]>(API_ENDPOINTS.RESULT_LIST)
+  // 使用 POST 而不是 GET
+  return post<Result[]>(API_ENDPOINTS.RESULT_LIST, {}, true)
 }
 
 /**
@@ -91,8 +150,9 @@ export async function getResultDetail(resultId: string | number): Promise<Result
     await delay()
     return mockResults.find(r => r.id === String(resultId)) || mockResultDetail
   }
+  // 使用 POST 而不是 GET
   const url = API_ENDPOINTS.RESULT_DETAIL.replace(':id', String(resultId))
-  return get(url)
+  return post(url, {}, true)
 }
 
 /**
@@ -109,7 +169,7 @@ export async function getResultByTaskId(taskId: string | number): Promise<Result
     // 如果没找到，说明任务刚完成，返回一个默认结果
     return mockResultDetail
   }
-  // 真实 API 调用
-  return get(`/api/tasks/${taskId}/result`)
+  // 真实 API 调用（使用 POST 而不是 GET）
+  return post(`/api/tasks/${taskId}/result`, {}, true)
 }
 

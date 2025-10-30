@@ -1,0 +1,16 @@
+/**
+ * Taro UI Vue3 样式导入
+ * 解决 @import 路径问题
+ */
+
+// 变量
+@import 'taro-ui-vue3/dist/style/variables/default.scss';
+
+// Mixins
+@import 'taro-ui-vue3/dist/style/mixins/index.scss';
+
+// 组件样式 - 只导入项目中使用的组件
+@import 'taro-ui-vue3/dist/style/components/button.scss';
+@import 'taro-ui-vue3/dist/style/components/input.scss';
+@import 'taro-ui-vue3/dist/style/components/form.scss';
+

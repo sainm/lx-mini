@@ -266,7 +266,7 @@ const handleSubmit = async () => {
   try {
     // 转换答案格式
     const answers: Answer[] = []
-    taskStore.answers.forEach((answer, questionId) => {
+    Object.entries(taskStore.answers).forEach(([questionId, answer]) => {
       answers.push({
         questionId,
         answer,

@@ -13,7 +13,7 @@ export const useTaskStore = defineStore('task', () => {
   const questions = ref<Question[]>([])
 
   // 用户答案
-  const answers = ref<Map<string | number, string | string[]>>(new Map())
+  const answers = ref<Record<string | number, string | string[]>>({})
 
   // 答题开始时间
   const startTime = ref<number>(0)
@@ -35,17 +35,17 @@ export const useTaskStore = defineStore('task', () => {
 
   // 设置答案
   const setAnswer = (questionId: string | number, answer: string | string[]) => {
-    answers.value.set(questionId, answer)
+    answers.value[questionId] = answer
   }
 
   // 获取答案
   const getAnswer = (questionId: string | number) => {
-    return answers.value.get(questionId)
+    return answers.value[questionId]
   }
 
   // 开始答题
   const startTask = () => {
-    answers.value.clear()
+    answers.value = {}
     startTime.value = Date.now()
   }
 
@@ -57,14 +57,14 @@ export const useTaskStore = defineStore('task', () => {
 
   // 获取已答题数
   const getAnsweredCount = () => {
-    return answers.value.size
+    return Object.keys(answers.value).length
   }
 
   // 清除当前任务数据
   const clearCurrentTask = () => {
     currentTask.value = null
     questions.value = []
-    answers.value.clear()
+    answers.value = {}
     startTime.value = 0
   }
 

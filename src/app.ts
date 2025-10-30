@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import './app.scss'
-import 'taro-ui-vue3/dist/style/index.scss'
+// 导入自定义的 taro-ui 样式文件（按需导入，避免路径问题）
+import './styles/taro-ui.scss'
 
 const App = createApp({
   onShow(options) {

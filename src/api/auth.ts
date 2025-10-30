@@ -1,4 +1,4 @@
-import { post } from '../utils/request'
+import { post, postForm } from '../utils/request'
 import { API_ENDPOINTS, USE_MOCK } from '../config/api'
 import type { User } from '../types'
 import { delay } from '../utils/mock'
@@ -13,6 +13,14 @@ export interface LoginParams {
 export interface LoginResponse {
   token: string
   user: User
+}
+
+// 后端实际返回的登录响应
+interface BackendLoginResponse {
+  tokenType: string
+  accessToken: string
+  refreshToken: string
+  expiresIn: number
 }
 
 // 注册请求参数
@@ -43,7 +51,20 @@ export async function login(params: LoginParams): Promise<LoginResponse> {
       throw new Error('用户名或密码错误')
     }
   }
-  return post<LoginResponse>(API_ENDPOINTS.LOGIN, params, false)
+
+  // 使用表单格式发送（后端使用 @RequestParam）
+  const backendResponse = await postForm<BackendLoginResponse>(API_ENDPOINTS.LOGIN, params, false)
+
+  // 转换后端响应格式为前端期望的格式
+  return {
+    token: backendResponse.accessToken,  // 使用 accessToken 作为 token
+    user: {
+      id: params.username,  // 后端没返回用户信息，暂时用 username 作为 id
+      username: params.username,
+      nickname: params.username,  // 暂时用 username 作为 nickname
+      createdAt: new Date().toISOString()
+    }
+  }
 }
 
 /**

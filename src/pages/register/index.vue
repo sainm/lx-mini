@@ -4,13 +4,13 @@
       <view class="title">注册</view>
 
       <view class="form-item">
-        <AtInput :value="username" type="text" placeholder="用户名（至少3个字符）" :clear="true" @change="onChangeUsername" />
+        <input class="custom-input" v-model="username" type="text" placeholder="用户名（至少3个字符）" />
       </view>
       <view class="form-item">
-        <AtInput :value="password" type="password" placeholder="密码（至少6个字符）" :clear="true" @change="onChangePassword" />
+        <input class="custom-input" v-model="password" type="password" placeholder="密码（至少6个字符）" />
       </view>
       <view class="form-item">
-        <AtInput :value="confirmPassword" type="password" placeholder="确认密码" :clear="true" @change="onChangeConfirmPassword" />
+        <input class="custom-input" v-model="confirmPassword" type="password" placeholder="确认密码" />
       </view>
 
       <AtButton type="primary" :full="true" :loading="loading" :disabled="loading" @click="onRegister">注册</AtButton>
@@ -32,18 +32,6 @@ const username = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const loading = ref(false)
-
-const onChangeUsername = (val: string) => {
-  username.value = val
-}
-
-const onChangePassword = (val: string) => {
-  password.value = val
-}
-
-const onChangeConfirmPassword = (val: string) => {
-  confirmPassword.value = val
-}
 
 const onRegister = async () => {
   if (!username.value || !password.value) {
@@ -105,6 +93,28 @@ const backLogin = () => {
 .card { width: 100%; max-width: 680rpx; background: var(--card-bg, #fff); border-radius: 24rpx; padding: 32rpx 28rpx 24rpx; box-shadow: 0 12rpx 40rpx rgba(0,0,0,0.04); box-sizing: border-box; }
 .title { font-size: 36rpx; font-weight: 600; text-align: center; margin-bottom: 28rpx; color: var(--text-primary, #1d2129); }
 .form-item { margin-bottom: 20rpx; }
+
+/* 自定义输入框样式 */
+.custom-input {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  border: 2rpx solid #e5e6eb;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+  background: #fff;
+  color: #1d2129;
+}
+
+.custom-input:focus {
+  border-color: #165DFF;
+  outline: none;
+}
+
+.custom-input::placeholder {
+  color: #c9cdd4;
+}
 .secondary-btn { color: var(--color-primary, #165DFF); border: 2rpx solid var(--color-primary, #165DFF); background: transparent; width: 100%; height: 88rpx; line-height: 88rpx; border-radius: 20rpx; margin-top: 20rpx; font-size: 32rpx; }
 .taro-at-button { width: 100%; }
 .taro-at-button + .taro-at-button { margin-top: 20rpx; }

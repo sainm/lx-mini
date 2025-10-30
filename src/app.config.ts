@@ -14,18 +14,18 @@ export default {
     navigationBarTextStyle: 'white'
   },
   tabBar: {
-    color: '#666',
+    color: '#86909c',
     selectedColor: '#165DFF',
     backgroundColor: '#ffffff',
-    borderStyle: 'black',
+    borderStyle: 'white',
     list: [
       {
         pagePath: 'pages/quiz/index',
-        text: '任务'
+        text: '测评任务'
       },
       {
         pagePath: 'pages/results/index',
-        text: '结果'
+        text: '测评报告'
       }
     ]
   }

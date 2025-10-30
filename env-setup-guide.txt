@@ -1,0 +1,99 @@
+========================================
+   环境配置文件创建指南
+========================================
+
+请按照以下步骤操作：
+
+方法一：使用自动化脚本（推荐）⭐
+----------------------------------------
+在项目根目录运行以下命令：
+
+    node scripts/setup-env.js
+
+然后选择选项 1（使用 Mock 数据）或选项 2（连接真实后端）
+
+
+方法二：手动创建文件
+----------------------------------------
+在项目根目录（lx-mini 文件夹）手动创建以下两个文件：
+
+========================================
+文件 1：.env.development
+========================================
+复制以下内容并保存为 .env.development 文件：
+
+# 开发环境配置
+NODE_ENV=development
+
+# API 基础地址
+TARO_APP_API_BASE_URL=http://localhost:3000
+
+# API 超时时间（毫秒）
+TARO_APP_REQUEST_TIMEOUT=10000
+
+# 是否开启 Mock 数据
+TARO_APP_USE_MOCK=true
+
+# 是否开启调试模式
+TARO_APP_DEBUG=true
+
+========================================
+文件 2：.env.production
+========================================
+复制以下内容并保存为 .env.production 文件：
+
+# 生产环境配置
+NODE_ENV=production
+
+# API 基础地址（请修改为实际的生产环境地址）
+TARO_APP_API_BASE_URL=https://api.your-domain.com
+
+# API 超时时间（毫秒）
+TARO_APP_REQUEST_TIMEOUT=15000
+
+# 是否开启 Mock 数据
+TARO_APP_USE_MOCK=false
+
+# 是否开启调试模式
+TARO_APP_DEBUG=false
+
+========================================
+修改说明
+========================================
+
+1. 如果要使用 Mock 数据（无需后端）：
+   保持 TARO_APP_USE_MOCK=true
+
+2. 如果要连接本地后端：
+   - 修改：TARO_APP_USE_MOCK=false
+   - 修改：TARO_APP_API_BASE_URL=http://localhost:你的端口
+   例如：TARO_APP_API_BASE_URL=http://localhost:8080
+
+3. 如果要连接远程后端：
+   - 修改：TARO_APP_USE_MOCK=false
+   - 修改：TARO_APP_API_BASE_URL=https://你的域名
+   例如：TARO_APP_API_BASE_URL=https://api.example.com
+
+========================================
+完成后
+========================================
+
+1. 重启开发服务：
+   Ctrl+C 停止当前服务
+   pnpm dev:weapp 重新启动
+
+2. 查看控制台确认配置：
+   打开微信开发者工具 -> 调试器 -> Console
+   应该能看到：
+   === 环境配置 ===
+   API_BASE_URL: http://localhost:3000
+   USE_MOCK: true
+   ===============
+
+3. 测试登录：
+   Mock 模式下使用测试账号：
+   用户名：test
+   密码：123456
+
+========================================
+
